@@ -3,6 +3,7 @@ import { Product } from '../models/types';
 import { formatDistanceToNow } from 'date-fns';
 import WishlistButton from './WishlistButton';
 import { useNavigate } from 'react-router-dom';
+import { Tag } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -17,40 +18,75 @@ const ProductCard = ({ product }: ProductCardProps) => {
     console.log(`Viewing product: ${product.title}`);
   };
   
+  const hasAuction = product.bidding?.isAuction;
+  const hasBuyNow = product.buyNowPrice !== undefined;
+  
   return (
     <div 
-      className="card-ios transition-transform duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.99]"
+      className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow duration-200 bg-white cursor-pointer"
       onClick={handleClick}
     >
       <div className="relative">
         <img
           src={product.images[0]}
           alt={product.title}
-          className="h-48 w-full object-cover rounded-t-lg"
+          className="h-48 w-full object-cover"
         />
         <div className="absolute top-2 right-2">
           <WishlistButton productId={product.id} />
         </div>
         {product.isArchived && (
-          <div className="absolute bottom-2 left-2 bg-gray-800/80 text-white text-xs py-1 px-2 rounded-full">
+          <div className="absolute bottom-2 left-2 bg-gray-800/80 text-white text-xs py-1 px-2 rounded">
             Archived
           </div>
         )}
       </div>
       <div className="p-3">
-        <div className="flex justify-between">
-          <h3 className="font-medium text-lg truncate">{product.title}</h3>
-          <p className="font-bold text-ios-blue">${product.price}</p>
+        <h3 className="font-medium text-sm leading-tight line-clamp-2 h-10">{product.title}</h3>
+        
+        <div className="mt-2">
+          {hasAuction && (
+            <div className="flex items-center text-xs text-gray-500">
+              <span>Current bid:</span>
+              <span className="font-bold text-base ml-1 text-[#3665f3]">
+                ${product.bidding?.currentBid?.toFixed(2)}
+              </span>
+            </div>
+          )}
+          
+          {hasBuyNow && (
+            <div className="flex items-center text-xs text-gray-500">
+              <span>{hasAuction ? "Buy it now:" : "Price:"}</span>
+              <span className="font-bold text-base ml-1 text-black">
+                ${product.buyNowPrice?.toFixed(2)}
+              </span>
+            </div>
+          )}
+          
+          {!hasAuction && !hasBuyNow && (
+            <div className="font-bold text-base text-black">
+              ${product.price.toFixed(2)}
+            </div>
+          )}
         </div>
-        <p className="text-ios-gray text-sm truncate my-1">{product.location}</p>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-ios-gray">
+        
+        <div className="flex items-center mt-1 text-xs text-gray-500">
+          <Tag className="h-3 w-3 mr-1" />
+          <span>{product.condition}</span>
+        </div>
+        
+        <div className="mt-2 flex justify-between items-center text-xs text-gray-500">
+          <span className="truncate max-w-[70%]">{product.location}</span>
+          <span>
             {formatDistanceToNow(new Date(product.createdAt), { addSuffix: true })}
           </span>
-          <span className="text-xs px-2 py-1 bg-ios-lightGray rounded-full">
-            {product.condition}
-          </span>
         </div>
+        
+        {product.shipping?.freeShipping && (
+          <div className="mt-1 text-xs font-medium text-green-600">
+            Free shipping
+          </div>
+        )}
       </div>
     </div>
   );

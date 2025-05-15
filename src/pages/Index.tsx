@@ -3,7 +3,9 @@ import Navbar from '../components/Navbar';
 import CategorySelector from '../components/CategorySelector';
 import FeaturedProducts from '../components/FeaturedProducts';
 import Footer from '../components/Footer';
-import { ArrowRight, ShoppingBag, Zap, Shield } from 'lucide-react';
+import { ArrowRight, Search, ShoppingBag, Zap, Shield, Heart, Tag, Bell } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import SellItemButton from '@/components/SellItemButton';
 
 const Index = () => {
   return (
@@ -11,99 +13,135 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        {/* Hero Banner */}
+        <section className="bg-[#F8F8F8] py-8">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-8 md:mb-0">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  Buy and sell anything <span className="text-ios-blue">easily</span>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                  Welcome to <span className="text-[#3665f3]">eBay</span> Clone
                 </h1>
                 <p className="text-lg text-gray-600 mb-6">
-                  The marketplace where you can find everything you need or sell what you don't.
+                  The marketplace where you can buy and sell almost anything.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="btn-ios">
-                    Start Browsing
-                  </button>
-                  <button className="px-5 py-2 rounded-full border border-ios-blue text-ios-blue font-medium">
-                    Sell Now
-                  </button>
+                  <Button className="bg-[#3665f3] hover:bg-[#3665f3]/90">
+                    Shop Now
+                  </Button>
+                  <SellItemButton />
                 </div>
               </div>
               <div className="md:w-1/2">
                 <img 
-                  src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2787" 
+                  src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?q=80&w=2070" 
                   alt="Marketplace" 
-                  className="rounded-2xl shadow-ios-lg object-cover h-64 md:h-96 w-full"
+                  className="rounded-lg shadow-md object-cover h-64 md:h-80 w-full"
                 />
               </div>
             </div>
           </div>
         </section>
         
-        {/* Features Section */}
-        <section className="py-12 bg-white">
+        {/* Daily Deals */}
+        <section className="py-8 bg-white">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-10">Why Use All For You?</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Daily Deals</h2>
+              <Button variant="link" className="text-[#3665f3] flex items-center">
+                See all <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="card-ios text-center p-6">
-                <div className="mx-auto bg-blue-100 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
-                  <ShoppingBag className="h-8 w-8 text-ios-blue" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {Array(6).fill(0).map((_, i) => (
+                <div key={i} className="border border-gray-200 rounded-md overflow-hidden hover:shadow-md transition-shadow duration-200 bg-white">
+                  <div className="relative pt-[100%]">
+                    <img
+                      src={`https://picsum.photos/200/200?random=${i+10}`}
+                      alt="Deal item"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute top-0 left-0 bg-red-500 text-white text-xs py-1 px-2">
+                      DEAL
+                    </div>
+                  </div>
+                  <div className="p-2">
+                    <p className="text-sm font-medium line-clamp-1">Special Deal Item {i+1}</p>
+                    <div className="flex items-baseline gap-2 mt-1">
+                      <span className="text-sm font-bold">$19.99</span>
+                      <span className="text-xs text-gray-500 line-through">$29.99</span>
+                    </div>
+                    <p className="text-xs text-green-600 mt-1">33% OFF</p>
+                  </div>
                 </div>
-                <h3 className="font-bold text-xl mb-2">Easy Buying & Selling</h3>
-                <p className="text-ios-gray">List your items in minutes and find what you need with our powerful search.</p>
-              </div>
-              
-              <div className="card-ios text-center p-6">
-                <div className="mx-auto bg-blue-100 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
-                  <Zap className="h-8 w-8 text-ios-blue" />
-                </div>
-                <h3 className="font-bold text-xl mb-2">Fast Delivery</h3>
-                <p className="text-ios-gray">Connect with local buyers and sellers for quick transactions.</p>
-              </div>
-              
-              <div className="card-ios text-center p-6">
-                <div className="mx-auto bg-blue-100 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
-                  <Shield className="h-8 w-8 text-ios-blue" />
-                </div>
-                <h3 className="font-bold text-xl mb-2">Safe & Secure</h3>
-                <p className="text-ios-gray">Verified users and secure messaging keep your transactions safe.</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
         
-        {/* Categories & Products */}
-        <section className="py-12 bg-gray-50">
+        {/* Browse Categories */}
+        <section className="py-8 bg-[#F8F8F8]">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Browse Categories</h2>
-              <button className="text-ios-blue font-medium flex items-center">
-                View All <ArrowRight className="h-4 w-4 ml-1" />
-              </button>
+              <h2 className="text-2xl font-bold">Shop by Category</h2>
+              <Button variant="link" className="text-[#3665f3] flex items-center">
+                See all categories <ArrowRight className="h-4 w-4 ml-1" />
+              </Button>
             </div>
             
             <CategorySelector />
+          </div>
+        </section>
+        
+        {/* Featured Products */}
+        <section className="py-8 bg-white">
+          <div className="container mx-auto px-4">
+            <FeaturedProducts />
+          </div>
+        </section>
+        
+        {/* eBay Benefits */}
+        <section className="py-12 bg-[#F8F8F8]">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-10">Why eBay Clone?</h2>
             
-            <div className="mt-12">
-              <FeaturedProducts />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+                <div className="mx-auto bg-[#3665f3]/10 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
+                  <Tag className="h-8 w-8 text-[#3665f3]" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Great Deals</h3>
+                <p className="text-gray-600">Find amazing prices on the brands you love.</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+                <div className="mx-auto bg-[#3665f3]/10 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-[#3665f3]" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Buyer Protection</h3>
+                <p className="text-gray-600">Shop confidently with our money back guarantee.</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+                <div className="mx-auto bg-[#3665f3]/10 rounded-full p-4 w-16 h-16 mb-4 flex items-center justify-center">
+                  <Zap className="h-8 w-8 text-[#3665f3]" />
+                </div>
+                <h3 className="font-bold text-xl mb-2">Fast Shipping</h3>
+                <p className="text-gray-600">Get your items fast with trusted shipping carriers.</p>
+              </div>
             </div>
           </div>
         </section>
         
         {/* CTA Section */}
-        <section className="py-16 bg-ios-blue text-white">
+        <section className="py-12 bg-[#3665f3] text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to start selling?</h2>
             <p className="text-lg max-w-2xl mx-auto mb-8 opacity-90">
-              Join thousands of users who buy and sell on All For You every day.
-              It's quick, easy, and free to get started.
+              Join millions of sellers who grow their business on eBay Clone.
+              List your first item in minutes.
             </p>
-            <button className="bg-white text-ios-blue px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-colors">
-              Create a Listing
-            </button>
+            <SellItemButton />
           </div>
         </section>
       </main>

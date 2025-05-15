@@ -5,6 +5,7 @@ export interface User {
   email: string;
   avatar: string;
   createdAt: Date;
+  isGuest?: boolean;
 }
 
 export interface Product {
@@ -12,13 +13,29 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  category: string;
+  category: ProductCategory;
   images: string[];
   seller: User;
   location: string;
   condition: 'New' | 'Like New' | 'Good' | 'Fair' | 'Poor';
   createdAt: Date;
   isArchived: boolean;
+  bidding?: {
+    isAuction: boolean;
+    currentBid?: number;
+    bidCount?: number;
+    endTime?: Date;
+  };
+  buyNowPrice?: number;
+  shipping?: {
+    cost: number;
+    freeShipping: boolean;
+    expeditedAvailable: boolean;
+  };
+  returns?: {
+    accepted: boolean;
+    periodDays?: number;
+  };
 }
 
 export type ProductCategory = 
@@ -28,4 +45,9 @@ export type ProductCategory =
   | 'Household'
   | 'Vehicles' 
   | 'Property'
+  | 'Collectibles'
+  | 'Sports'
+  | 'Toys'
+  | 'Business & Industrial'
+  | 'Jewelry'
   | 'Other';
