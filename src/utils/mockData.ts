@@ -2,7 +2,7 @@
 import { Product, User, ProductCategory } from '../models/types';
 import { getAuthState } from '../components/AuthButtons';
 
-const mockUsers: User[] = [
+export const mockUsers: User[] = [
   {
     id: '1',
     name: 'Alice Johnson',
