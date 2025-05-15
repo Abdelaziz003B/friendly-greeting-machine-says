@@ -13,9 +13,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const navigate = useNavigate();
   
   const handleClick = () => {
-    // In a real app, we would navigate to the product detail page
-    // navigate(`/product/${product.id}`);
-    console.log(`Viewing product: ${product.title}`);
+    navigate(`/product/${product.id}`);
   };
   
   const hasAuction = product.bidding?.isAuction;
@@ -32,7 +30,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           alt={product.title}
           className="h-48 w-full object-cover"
         />
-        <div className="absolute top-2 right-2">
+        <div className="absolute top-2 right-2" onClick={e => e.stopPropagation()}>
           <WishlistButton productId={product.id} />
         </div>
         {product.isArchived && (
@@ -76,7 +74,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         
         <div className="mt-2 flex justify-between items-center text-xs text-gray-500">
-          <span className="truncate max-w-[70%]">{product.location}</span>
+          <a 
+            href={`/seller/${product.seller.id}`}
+            className="truncate max-w-[70%] hover:text-[#3665f3] hover:underline"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/seller/${product.seller.id}`);
+              return false;
+            }}
+          >
+            {product.location}
+          </a>
           <span>
             {formatDistanceToNow(new Date(product.createdAt), { addSuffix: true })}
           </span>

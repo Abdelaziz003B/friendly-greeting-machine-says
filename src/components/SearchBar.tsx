@@ -11,7 +11,8 @@ import {
   SelectValue
 } from './ui/select';
 import { ProductCategory } from '../models/types';
-import { useToast } from './ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const categories: ProductCategory[] = [
   'Electronics',
@@ -32,6 +33,7 @@ const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState<string>('');
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,8 +42,11 @@ const SearchBar = () => {
     
     toast({
       title: "Search Initiated",
-      description: `Searching for "${searchTerm}" ${category ? `in ${category}` : ''}`,
+      description: `Searching for "${searchTerm}" ${category && category !== 'all-categories' ? `in ${category}` : ''}`,
     });
+    
+    // In a real app, we would navigate to a search results page with query params
+    navigate(`/search?q=${encodeURIComponent(searchTerm)}${category && category !== 'all-categories' ? `&category=${encodeURIComponent(category)}` : ''}`);
   };
 
   return (

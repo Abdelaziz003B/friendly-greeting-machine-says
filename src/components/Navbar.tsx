@@ -1,26 +1,19 @@
 
 import { useState } from 'react';
 import { Bell, Menu, Search, X } from 'lucide-react';
-import { getCurrentUser } from '../utils/mockData';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
-import AuthButtons from './AuthButtons';
+import AuthButtons, { getAuthState } from './AuthButtons';
 import SellItemButton from './SellItemButton';
-import WishlistButton from './WishlistButton';
 
 const Navbar = () => {
-  const currentUser = getCurrentUser();
+  const auth = getAuthState();
+  const currentUser = auth.isLoggedIn ? auth.user : null;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Search functionality",
-      description: "Search would go here in a real app",
-    });
-  };
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -44,7 +37,15 @@ const Navbar = () => {
                 <>
                   <div className="hidden md:flex items-center space-x-3">
                     <SellItemButton />
-                    <a href="/wishlist" className="text-gray-700 hover:text-[#3665f3] transition-colors">
+                    <a 
+                      href="/wishlist" 
+                      className="text-gray-700 hover:text-[#3665f3] transition-colors"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/wishlist');
+                        return false;
+                      }}
+                    >
                       Watchlist
                     </a>
                     <button className="p-2 rounded-full hover:bg-gray-100">
@@ -85,17 +86,106 @@ const Navbar = () => {
           </div>
           
           {/* Third Row - Categories */}
-          <div className="hidden md:flex items-center space-x-6 text-sm pt-1">
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Home</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Saved</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Electronics</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Fashion</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Health & Beauty</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Home & Garden</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Sports</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Collectibles</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Industrial</a>
-            <a href="#" className="text-gray-700 hover:text-[#3665f3] transition-colors">Motors</a>
+          <div className="hidden md:flex items-center space-x-6 text-sm pt-1 overflow-x-auto">
+            <a 
+              href="/" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+                return false;
+              }}
+            >
+              Home
+            </a>
+            <a 
+              href="/wishlist" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/wishlist');
+                return false;
+              }}
+            >
+              Saved
+            </a>
+            <a 
+              href="/search?category=Electronics" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Electronics');
+                return false;
+              }}
+            >
+              Electronics
+            </a>
+            <a 
+              href="/search?category=Fashion" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Fashion');
+                return false;
+              }}
+            >
+              Fashion
+            </a>
+            <a 
+              href="/search?category=Household" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Household');
+                return false;
+              }}
+            >
+              Home & Garden
+            </a>
+            <a 
+              href="/search?category=Sports" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Sports');
+                return false;
+              }}
+            >
+              Sports
+            </a>
+            <a 
+              href="/search?category=Collectibles" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Collectibles');
+                return false;
+              }}
+            >
+              Collectibles
+            </a>
+            <a 
+              href="/search?category=Business & Industrial" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Business & Industrial');
+                return false;
+              }}
+            >
+              Industrial
+            </a>
+            <a 
+              href="/search?category=Vehicles" 
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/search?category=Vehicles');
+                return false;
+              }}
+            >
+              Motors
+            </a>
           </div>
         </div>
         
@@ -118,13 +208,33 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/wishlist" className="block py-2 text-gray-700">
+                  <a href="/wishlist" className="block py-2 text-gray-700" onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/wishlist');
+                    setIsMenuOpen(false);
+                    return false;
+                  }}>
                     Watchlist
                   </a>
                 </li>
                 <li>
-                  <a href="/listings" className="block py-2 text-gray-700">
-                    My Listings
+                  <a href="/search?category=Electronics" className="block py-2 text-gray-700" onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/search?category=Electronics');
+                    setIsMenuOpen(false);
+                    return false;
+                  }}>
+                    Electronics
+                  </a>
+                </li>
+                <li>
+                  <a href="/search?category=Fashion" className="block py-2 text-gray-700" onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/search?category=Fashion');
+                    setIsMenuOpen(false);
+                    return false;
+                  }}>
+                    Fashion
                   </a>
                 </li>
                 {currentUser && (
