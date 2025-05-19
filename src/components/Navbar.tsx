@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Bell, Menu, Search, X } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import AuthButtons, { getAuthState } from './AuthButtons';
@@ -13,11 +13,11 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-white border-b border-gray-200">
       <div className="container mx-auto px-4 py-3">
@@ -30,15 +30,15 @@ const Navbar = () => {
                 eBay Clone
               </a>
             </div>
-            
+
             {/* Right Side - Auth & Sell */}
             <div className="flex items-center space-x-3">
               {currentUser ? (
                 <>
                   <div className="hidden md:flex items-center space-x-3">
                     <SellItemButton />
-                    <a 
-                      href="/wishlist" 
+                    <a
+                      href="/wishlist"
                       className="text-gray-700 hover:text-[#3665f3] transition-colors"
                       onClick={(e) => {
                         e.preventDefault();
@@ -66,7 +66,7 @@ const Navbar = () => {
                   <SellItemButton />
                 </div>
               )}
-              
+
               {/* Mobile Menu Toggle */}
               <button className="md:hidden p-1" onClick={toggleMenu}>
                 {isMenuOpen ? (
@@ -77,18 +77,18 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Second Row - Search */}
           <div className="flex items-center">
             <div className="w-full">
               <SearchBar />
             </div>
           </div>
-          
+
           {/* Third Row - Categories */}
           <div className="hidden md:flex items-center space-x-6 text-sm pt-1 overflow-x-auto">
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -98,8 +98,8 @@ const Navbar = () => {
             >
               Home
             </a>
-            <a 
-              href="/wishlist" 
+            <a
+              href="/wishlist"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -109,8 +109,8 @@ const Navbar = () => {
             >
               Saved
             </a>
-            <a 
-              href="/search?category=Electronics" 
+            <a
+              href="/search?category=Electronics"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -120,8 +120,8 @@ const Navbar = () => {
             >
               Electronics
             </a>
-            <a 
-              href="/search?category=Fashion" 
+            <a
+              href="/search?category=Fashion"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -131,8 +131,8 @@ const Navbar = () => {
             >
               Fashion
             </a>
-            <a 
-              href="/search?category=Household" 
+            <a
+              href="/search?category=Household"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -142,8 +142,8 @@ const Navbar = () => {
             >
               Home & Garden
             </a>
-            <a 
-              href="/search?category=Sports" 
+            <a
+              href="/search?category=Sports"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -153,8 +153,8 @@ const Navbar = () => {
             >
               Sports
             </a>
-            <a 
-              href="/search?category=Collectibles" 
+            <a
+              href="/search?category=Collectibles"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -164,8 +164,8 @@ const Navbar = () => {
             >
               Collectibles
             </a>
-            <a 
-              href="/search?category=Business & Industrial" 
+            <a
+              href="/search?category=Business & Industrial"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -175,8 +175,8 @@ const Navbar = () => {
             >
               Industrial
             </a>
-            <a 
-              href="/search?category=Vehicles" 
+            <a
+              href="/search?category=Vehicles"
               className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
               onClick={(e) => {
                 e.preventDefault();
@@ -188,7 +188,7 @@ const Navbar = () => {
             </a>
           </div>
         </div>
-        
+
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg md:hidden">

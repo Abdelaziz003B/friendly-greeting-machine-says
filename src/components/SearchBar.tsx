@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Search } from 'lucide-react';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -11,7 +11,7 @@ import {
   SelectValue
 } from './ui/select';
 import { ProductCategory } from '../models/types';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const categories: ProductCategory[] = [
@@ -34,17 +34,17 @@ const SearchBar = () => {
   const [category, setCategory] = useState<string>('');
   const { toast } = useToast();
   const navigate = useNavigate();
-  
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!searchTerm.trim()) return;
-    
+
     toast({
       title: "Search Initiated",
       description: `Searching for "${searchTerm}" ${category && category !== 'all-categories' ? `in ${category}` : ''}`,
     });
-    
+
     // In a real app, we would navigate to a search results page with query params
     navigate(`/search?q=${encodeURIComponent(searchTerm)}${category && category !== 'all-categories' ? `&category=${encodeURIComponent(category)}` : ''}`);
   };
@@ -63,7 +63,7 @@ const SearchBar = () => {
             ))}
           </SelectContent>
         </Select>
-      
+
         <Input
           type="search"
           placeholder="Search for anything"
@@ -72,9 +72,9 @@ const SearchBar = () => {
           className="flex-1 rounded-none border-l-0"
         />
       </div>
-      
-      <Button 
-        type="submit" 
+
+      <Button
+        type="submit"
         className="rounded-l-none bg-[#3665f3] hover:bg-[#3665f3]/90"
       >
         <Search className="h-4 w-4" />

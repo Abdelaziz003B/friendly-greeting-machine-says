@@ -1,23 +1,23 @@
 
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
   DialogFooter
 } from './ui/dialog';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
 } from './ui/tabs';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { User } from 'lucide-react';
 
 // Mock authentication state
@@ -52,10 +52,10 @@ export const AuthButtons = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // For demo purposes, allow login with test@test.com and any password
     if (email === "test@test.com") {
       setAuthState({
@@ -66,13 +66,13 @@ export const AuthButtons = () => {
           avatar: "https://randomuser.me/api/portraits/men/32.jpg"
         }
       });
-      
+
       toast({
         title: "Sign In Successful",
         description: "You have been signed in successfully.",
       });
       setIsOpen(false);
-      
+
       // Force a page reload to reflect the auth state change
       window.location.reload();
     } else {
@@ -83,10 +83,10 @@ export const AuthButtons = () => {
       });
     }
   };
-  
+
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // For demo purposes, show success for any input
     setAuthState({
       isLoggedIn: true,
@@ -96,17 +96,17 @@ export const AuthButtons = () => {
         avatar: "https://randomuser.me/api/portraits/men/45.jpg"
       }
     });
-    
+
     toast({
       title: "Sign Up Successful",
       description: "Your account has been created successfully.",
     });
     setIsOpen(false);
-    
+
     // Force a page reload to reflect the auth state change
     window.location.reload();
   };
-  
+
   const handleGuestAccess = () => {
     setAuthState({
       isLoggedIn: true,
@@ -116,36 +116,36 @@ export const AuthButtons = () => {
         avatar: "https://randomuser.me/api/portraits/lego/1.jpg",
       }
     });
-    
+
     toast({
       title: "Guest Access Granted",
       description: "You are now browsing as a guest.",
     });
     setIsOpen(false);
-    
+
     // Force a page reload to reflect the auth state change
     window.location.reload();
   };
-  
+
   const handleLogout = () => {
     setAuthState(initialAuthState);
-    
+
     toast({
       title: "Logged Out",
       description: "You have been logged out successfully.",
     });
-    
+
     // Force a page reload to reflect the auth state change
     window.location.reload();
   };
-  
+
   // Check if user is logged in
   const auth = getAuthState();
-  
+
   if (auth.isLoggedIn && auth.user) {
     return (
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         className="flex items-center gap-2 border-[#3665f3] text-[#3665f3] hover:text-[#3665f3]/90 hover:bg-[#3665f3]/10"
         onClick={handleLogout}
       >
@@ -154,7 +154,7 @@ export const AuthButtons = () => {
       </Button>
     );
   }
-  
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -167,22 +167,22 @@ export const AuthButtons = () => {
         <DialogHeader>
           <DialogTitle className="text-center">Account Access</DialogTitle>
         </DialogHeader>
-        
+
         <Tabs defaultValue="signin" className="w-full mt-4">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="signin">
             <form onSubmit={handleSignIn} className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="signin-email">Email</Label>
-                <Input 
-                  id="signin-email" 
-                  type="email" 
-                  placeholder="test@test.com" 
-                  required 
+                <Input
+                  id="signin-email"
+                  type="email"
+                  placeholder="test@test.com"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -192,10 +192,10 @@ export const AuthButtons = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signin-password">Password</Label>
-                <Input 
-                  id="signin-password" 
-                  type="password" 
-                  required 
+                <Input
+                  id="signin-password"
+                  type="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -206,46 +206,46 @@ export const AuthButtons = () => {
               <Button type="submit" className="w-full bg-[#3665f3] hover:bg-[#3665f3]/90">Sign In</Button>
             </form>
           </TabsContent>
-          
+
           <TabsContent value="signup">
             <form onSubmit={handleSignUp} className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="signup-name">Full Name</Label>
-                <Input 
-                  id="signup-name" 
-                  placeholder="John Doe" 
-                  required 
+                <Input
+                  id="signup-name"
+                  placeholder="John Doe"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-email">Email</Label>
-                <Input 
-                  id="signup-email" 
-                  type="email" 
-                  placeholder="email@example.com" 
-                  required 
+                <Input
+                  id="signup-email"
+                  type="email"
+                  placeholder="email@example.com"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-password">Password</Label>
-                <Input 
-                  id="signup-password" 
-                  type="password" 
-                  required 
+                <Input
+                  id="signup-password"
+                  type="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signup-confirm">Confirm Password</Label>
-                <Input 
-                  id="signup-confirm" 
-                  type="password" 
-                  required 
+                <Input
+                  id="signup-confirm"
+                  type="password"
+                  required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
@@ -254,11 +254,11 @@ export const AuthButtons = () => {
             </form>
           </TabsContent>
         </Tabs>
-        
+
         <DialogFooter className="flex flex-col space-y-2 mt-4">
           <div className="text-center text-sm text-muted-foreground">or</div>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handleGuestAccess}
             className="w-full"
           >
