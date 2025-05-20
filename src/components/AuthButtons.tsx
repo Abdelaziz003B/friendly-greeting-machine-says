@@ -21,6 +21,23 @@ import { useToast } from '@/components/ui/use-toast';
 import { User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+// Export the getAuthState function so it can be imported elsewhere
+export const getAuthState = () => {
+  const { user, loading } = useAuth();
+  
+  return {
+    isLoggedIn: !!user,
+    user: user ? {
+      id: user.id,
+      name: user?.user_metadata?.name || 'User',
+      email: user.email || '',
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
+      createdAt: new Date()
+    } : null,
+    isLoading: loading
+  };
+};
+
 export const AuthButtons = () => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
