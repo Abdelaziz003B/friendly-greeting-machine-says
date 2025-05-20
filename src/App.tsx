@@ -9,22 +9,25 @@ import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
 import SellerProfile from "./pages/SellerProfile";
 import Wishlist from "./pages/Wishlist";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => (
   <TooltipProvider>
-    <Toaster />
-    <Sonner />
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/product/:productId" element={<ProductDetails />} />
-        <Route path="/seller/:sellerId" element={<SellerProfile />} />
-        <Route path="/search" element={<SearchResults />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/seller/:sellerId" element={<SellerProfile />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </TooltipProvider>
 );
 

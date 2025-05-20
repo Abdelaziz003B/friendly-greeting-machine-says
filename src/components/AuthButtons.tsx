@@ -19,31 +19,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { User } from 'lucide-react';
-
-// Mock authentication state
-interface AuthState {
-  isLoggedIn: boolean;
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  } | null;
-}
-
-const initialAuthState: AuthState = {
-  isLoggedIn: false,
-  user: null
-};
-
-// In a real app, this would be handled by a proper auth provider
-let authState = initialAuthState;
-
-export const getAuthState = () => authState;
-
-export const setAuthState = (newState: AuthState) => {
-  authState = newState;
-  // In a real app, we'd persist this to localStorage or similar
-};
+import { useAuth } from '../context/AuthContext';
 
 export const AuthButtons = () => {
   const { toast } = useToast();
@@ -52,105 +28,78 @@ export const AuthButtons = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  
+  const { user, signIn, signUp, signOut } = useAuth();
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // For demo purposes, allow login with test@test.com and any password
-    if (email === "test@test.com") {
-      setAuthState({
-        isLoggedIn: true,
-        user: {
-          name: "Test User",
-          email: "test@test.com",
-          avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-        }
-      });
-
+    
+    if (!email || !password) {
       toast({
-        title: "Sign In Successful",
-        description: "You have been signed in successfully.",
-      });
-      setIsOpen(false);
-
-      // Force a page reload to reflect the auth state change
-      window.location.reload();
-    } else {
-      toast({
-        title: "Sign In Failed",
-        description: "Please use test@test.com as the email address.",
         variant: "destructive",
+        title: "Sign In Failed",
+        description: "Please provide both email and password.",
       });
+      return;
+    }
+    
+    const { error } = await signIn(email, password);
+    
+    if (!error) {
+      setIsOpen(false);
+      setEmail('');
+      setPassword('');
     }
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // For demo purposes, show success for any input
-    setAuthState({
-      isLoggedIn: true,
-      user: {
-        name: name || "New User",
-        email: email,
-        avatar: "https://randomuser.me/api/portraits/men/45.jpg"
-      }
-    });
-
-    toast({
-      title: "Sign Up Successful",
-      description: "Your account has been created successfully.",
-    });
-    setIsOpen(false);
-
-    // Force a page reload to reflect the auth state change
-    window.location.reload();
+    
+    if (!email || !password || !name) {
+      toast({
+        variant: "destructive",
+        title: "Sign Up Failed",
+        description: "Please fill in all required fields.",
+      });
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Sign Up Failed",
+        description: "Passwords do not match.",
+      });
+      return;
+    }
+    
+    const { error } = await signUp(email, password, name);
+    
+    if (!error) {
+      setIsOpen(false);
+      setEmail('');
+      setPassword('');
+      setName('');
+      setConfirmPassword('');
+    }
   };
 
   const handleGuestAccess = () => {
-    setAuthState({
-      isLoggedIn: true,
-      user: {
-        name: "Guest User",
-        email: "guest@example.com",
-        avatar: "https://randomuser.me/api/portraits/lego/1.jpg",
-      }
-    });
-
     toast({
-      title: "Guest Access Granted",
-      description: "You are now browsing as a guest.",
+      title: "Guest Access",
+      description: "Guest access is not available with Supabase integration. Please sign up or sign in.",
     });
-    setIsOpen(false);
-
-    // Force a page reload to reflect the auth state change
-    window.location.reload();
   };
 
-  const handleLogout = () => {
-    setAuthState(initialAuthState);
-
-    toast({
-      title: "Logged Out",
-      description: "You have been logged out successfully.",
-    });
-
-    // Force a page reload to reflect the auth state change
-    window.location.reload();
-  };
-
-  // Check if user is logged in
-  const auth = getAuthState();
-
-  if (auth.isLoggedIn && auth.user) {
+  if (user) {
     return (
       <Button
         variant="outline"
         className="flex items-center gap-2 border-[#3665f3] text-[#3665f3] hover:text-[#3665f3]/90 hover:bg-[#3665f3]/10"
-        onClick={handleLogout}
+        onClick={signOut}
       >
         <User className="h-4 w-4" />
-        <span>Logout ({auth.user.name})</span>
+        <span>Logout</span>
       </Button>
     );
   }
@@ -181,14 +130,11 @@ export const AuthButtons = () => {
                 <Input
                   id="signin-email"
                   type="email"
-                  placeholder="test@test.com"
+                  placeholder="your.email@example.com"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <p className="text-xs text-gray-500">
-                  For demo purposes, use test@test.com
-                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="signin-password">Password</Label>
@@ -199,9 +145,6 @@ export const AuthButtons = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <p className="text-xs text-gray-500">
-                  Any password will work for this demo
-                </p>
               </div>
               <Button type="submit" className="w-full bg-[#3665f3] hover:bg-[#3665f3]/90">Sign In</Button>
             </form>
@@ -224,7 +167,7 @@ export const AuthButtons = () => {
                 <Input
                   id="signup-email"
                   type="email"
-                  placeholder="email@example.com"
+                  placeholder="your.email@example.com"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
