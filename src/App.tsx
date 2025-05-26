@@ -11,27 +11,32 @@ import SellerProfile from "./pages/SellerProfile";
 import Wishlist from "./pages/Wishlist";
 import Groups from "./pages/Groups";
 import GroupDetail from "./pages/GroupDetail";
-import { AuthProvider } from "./context/AuthContext";
+import { MongoAuthProvider } from "./context/MongoAuthContext";
+import { DATABASE_CONFIG } from "./config/database";
 
 const App = () => (
   <TooltipProvider>
-    <AuthProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/product/:productId" element={<ProductDetails />} />
-          <Route path="/seller/:sellerId" element={<SellerProfile />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/groups" element={<Groups />} />
-          <Route path="/groups/:groupId" element={<GroupDetail />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    {DATABASE_CONFIG.provider === 'mongodb' ? (
+      <MongoAuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path="/seller/:sellerId" element={<SellerProfile />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/groups" element={<Groups />} />
+            <Route path="/groups/:groupId" element={<GroupDetail />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </MongoAuthProvider>
+    ) : (
+      <div>Please configure MongoDB in src/config/database.ts</div>
+    )}
   </TooltipProvider>
 );
 

@@ -2,8 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { toast } from '@/components/ui/sonner';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/MongoAuthContext';
 
 interface WishlistButtonProps {
   productId: string;
@@ -23,16 +22,9 @@ const WishlistButton = ({ productId, initialState }: WishlistButtonProps) => {
       }
 
       try {
-        const { data, error } = await supabase
-          .from('wishlists')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('product_id', productId)
-          .single();
-
-        if (!error && data) {
-          setIsWishlisted(true);
-        }
+        // Check localStorage for wishlist items
+        const wishlist = JSON.parse(localStorage.getItem(`wishlist_${user.id}`) || '[]');
+        setIsWishlisted(wishlist.includes(productId));
       } catch (error) {
         console.error('Error checking wishlist:', error);
       } finally {
@@ -50,26 +42,18 @@ const WishlistButton = ({ productId, initialState }: WishlistButtonProps) => {
     }
 
     try {
+      const wishlist = JSON.parse(localStorage.getItem(`wishlist_${user.id}`) || '[]');
+      
       if (isWishlisted) {
         // Remove from wishlist
-        await supabase
-          .from('wishlists')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('product_id', productId);
-
+        const updatedWishlist = wishlist.filter((id: string) => id !== productId);
+        localStorage.setItem(`wishlist_${user.id}`, JSON.stringify(updatedWishlist));
         setIsWishlisted(false);
         toast.info('Removed from your wishlist');
       } else {
         // Add to wishlist
-        await supabase
-          .from('wishlists')
-          .insert({
-            user_id: user.id,
-            product_id: productId,
-            created_at: new Date().toISOString(),
-          });
-
+        const updatedWishlist = [...wishlist, productId];
+        localStorage.setItem(`wishlist_${user.id}`, JSON.stringify(updatedWishlist));
         setIsWishlisted(true);
         toast.success('Added to your wishlist');
       }
