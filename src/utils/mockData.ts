@@ -1,4 +1,3 @@
-
 import { Product, User, ProductCategory } from '../models/types';
 import { getAuthState } from '../components/AuthButtons';
 
@@ -201,14 +200,12 @@ export const getCurrentUser = (): User | null => {
   const auth = getAuthState();
   
   if (auth.isLoggedIn && auth.user) {
-    // Return a user object based on the authenticated user
     return {
-      id: 'current-user',
+      id: auth.user.id,
       name: auth.user.name,
       email: auth.user.email,
       avatar: auth.user.avatar,
       createdAt: new Date(),
-      isGuest: auth.user.name === 'Guest User',
     };
   }
   

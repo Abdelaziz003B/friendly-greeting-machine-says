@@ -29,7 +29,7 @@ export const getAuthState = () => {
     isLoggedIn: !!user,
     user: user ? {
       id: user.id,
-      name: user?.user_metadata?.name || 'User',
+      name: user?.user_metadata?.name || user.email?.split('@')[0] || 'User',
       email: user.email || '',
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
       createdAt: new Date()
@@ -99,13 +99,6 @@ export const AuthButtons = () => {
       setName('');
       setConfirmPassword('');
     }
-  };
-
-  const handleGuestAccess = () => {
-    toast({
-      title: "Guest Access",
-      description: "Guest access is not available with Supabase integration. Please sign up or sign in.",
-    });
   };
 
   if (user) {
@@ -216,14 +209,9 @@ export const AuthButtons = () => {
         </Tabs>
 
         <DialogFooter className="flex flex-col space-y-2 mt-4">
-          <div className="text-center text-sm text-muted-foreground">or</div>
-          <Button
-            variant="outline"
-            onClick={handleGuestAccess}
-            className="w-full"
-          >
-            Continue as Guest
-          </Button>
+          <div className="text-center text-sm text-muted-foreground">
+            Sign in required to access all features
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
