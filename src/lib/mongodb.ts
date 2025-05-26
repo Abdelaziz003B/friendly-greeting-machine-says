@@ -1,10 +1,8 @@
-
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-// This should be replaced with your MongoDB connection string
-// IMPORTANT: This should NOT be exposed in frontend code in a production app
-// Ideally, this would be handled via a backend service or Supabase Edge Function
-const uri = "";  // Add your MongoDB URI here
+// Replace this with your MongoDB connection string
+// Example: "mongodb+srv://username:password@cluster.mongodb.net/dbname"
+const uri = "mongodb+srv://your-username:your-password@your-cluster.mongodb.net/marketplace-db?retryWrites=true&w=majority";  // Add your MongoDB URI here
 let client: MongoClient | null = null;
 let isConnected = false;
 
@@ -15,7 +13,7 @@ export const connectToMongoDB = async () => {
   }
 
   try {
-    if (!uri) {
+    if (!uri || uri.includes('your-username')) {
       console.error('MongoDB URI is required. Please add your MongoDB connection string.');
       return null;
     }
