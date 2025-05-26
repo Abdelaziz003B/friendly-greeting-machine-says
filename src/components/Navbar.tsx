@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import AuthButtons, { getAuthState } from './AuthButtons';
 import SellItemButton from './SellItemButton';
+import GroupsDropdown from './GroupsDropdown';
 
 const Navbar = () => {
   const auth = getAuthState();
@@ -37,6 +38,7 @@ const Navbar = () => {
                 <>
                   <div className="hidden md:flex items-center space-x-3">
                     <SellItemButton />
+                    <GroupsDropdown />
                     <a
                       href="/wishlist"
                       className="text-gray-700 hover:text-[#3665f3] transition-colors"
@@ -63,6 +65,7 @@ const Navbar = () => {
               ) : (
                 <div className="hidden md:flex items-center space-x-3">
                   <AuthButtons />
+                  <GroupsDropdown />
                   <SellItemButton />
                 </div>
               )}
@@ -97,6 +100,17 @@ const Navbar = () => {
               }}
             >
               Home
+            </a>
+            <a
+              href="/groups"
+              className="text-gray-700 hover:text-[#3665f3] transition-colors whitespace-nowrap"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/groups');
+                return false;
+              }}
+            >
+              Groups
             </a>
             <a
               href="/wishlist"
@@ -205,6 +219,16 @@ const Navbar = () => {
                 <li>
                   <a href="/" className="block py-2 text-gray-700">
                     Home
+                  </a>
+                </li>
+                <li>
+                  <a href="/groups" className="block py-2 text-gray-700" onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/groups');
+                    setIsMenuOpen(false);
+                    return false;
+                  }}>
+                    Groups
                   </a>
                 </li>
                 <li>

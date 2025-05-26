@@ -72,10 +72,15 @@ export const CreateGroupDialog = ({ onGroupCreated }: CreateGroupDialogProps) =>
     }
 
     try {
-      const groupId = await GroupService.createGroup({
-        ...values,
+      const groupData = {
+        name: values.name,
+        description: values.description,
+        category: values.category,
+        isPublic: values.isPublic,
         createdBy: user.id,
-      });
+      };
+
+      const groupId = await GroupService.createGroup(groupData);
 
       if (groupId) {
         toast({
