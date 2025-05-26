@@ -9,6 +9,7 @@ import ProductDetails from "./pages/ProductDetails";
 import SearchResults from "./pages/SearchResults";
 import SellerProfile from "./pages/SellerProfile";
 import Wishlist from "./pages/Wishlist";
+import Groups from "./pages/Groups";
 import { AuthProvider } from "./context/AuthContext";
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/seller/:sellerId" element={<SellerProfile />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/groups" element={<Groups />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

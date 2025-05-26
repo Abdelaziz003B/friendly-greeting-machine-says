@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -36,6 +35,8 @@ export interface Product {
     accepted: boolean;
     periodDays?: number;
   };
+  groupId?: string;
+  visibility: 'public' | 'group-only';
 }
 
 export type ProductCategory = 

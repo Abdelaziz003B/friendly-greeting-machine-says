@@ -1,4 +1,3 @@
-
 export type Json =
   | string
   | number
@@ -33,6 +32,8 @@ export interface Database {
           expedited_available: boolean
           returns_accepted: boolean
           returns_period_days?: number
+          group_id?: string
+          visibility: string
         }
         Insert: {
           id?: string
@@ -56,6 +57,8 @@ export interface Database {
           expedited_available?: boolean
           returns_accepted?: boolean
           returns_period_days?: number
+          group_id?: string
+          visibility?: string
         }
         Update: {
           id?: string
@@ -79,6 +82,8 @@ export interface Database {
           expedited_available?: boolean
           returns_accepted?: boolean
           returns_period_days?: number
+          group_id?: string
+          visibility?: string
         }
       }
       profiles: {

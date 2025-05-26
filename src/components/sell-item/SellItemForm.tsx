@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/components/ui/use-toast';
@@ -9,6 +9,8 @@ import { DialogFooter } from '@/components/ui/dialog';
 import { ProductCategory } from '@/models/types';
 import { useAuth } from '@/context/AuthContext';
 import { ImageUpload } from './ImageUpload';
+import { GroupService } from '@/services/GroupService';
+import { Group } from '@/models/group.types';
 import { 
   Form,
   FormControl,
@@ -35,17 +37,34 @@ import {
 
 interface SellItemFormProps {
   onSuccess: () => void;
+  initialGroupId?: string;
 }
 
-export const SellItemForm = ({ onSuccess }: SellItemFormProps) => {
+export const SellItemForm = ({ onSuccess, initialGroupId }: SellItemFormProps) => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [images, setImages] = useState<string[]>([]);
+  const [userGroups, setUserGroups] = useState<Group[]>([]);
 
   const form = useForm<SellItemFormValues>({
     resolver: zodResolver(sellItemFormSchema),
-    defaultValues: defaultFormValues,
+    defaultValues: {
+      ...defaultFormValues,
+      groupId: initialGroupId || '',
+    },
   });
+
+  useEffect(() => {
+    if (user) {
+      fetchUserGroups();
+    }
+  }, [user]);
+
+  const fetchUserGroups = async () => {
+    if (!user) return;
+    const groups = await GroupService.getUserGroups(user.id);
+    setUserGroups(groups);
+  };
 
   const onSubmit = async (values: SellItemFormValues) => {
     if (!user) {
@@ -83,6 +102,8 @@ export const SellItemForm = ({ onSuccess }: SellItemFormProps) => {
         expedited_available: values.expeditedAvailable,
         returns_accepted: values.returnsAccepted,
         returns_period_days: values.returnsAccepted ? parseInt(values.returnsPeriod || '14') : undefined,
+        group_id: values.groupId || null,
+        visibility: values.visibility,
       };
       
       const productId = await ProductService.createProduct(productData);
@@ -193,6 +214,58 @@ export const SellItemForm = ({ onSuccess }: SellItemFormProps) => {
             </FormItem>
           )}
         />
+
+        <div className="border-t pt-4">
+          <h3 className="font-medium mb-3">Group Options</h3>
+          
+          <FormField
+            control={form.control}
+            name="groupId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Post to Group (Optional)</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a group or leave public" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="">Public (No Group)</SelectItem>
+                    {userGroups.map((group) => (
+                      <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {form.watch('groupId') && (
+            <FormField
+              control={form.control}
+              name="visibility"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <FormLabel>Visibility</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="public">Public (Visible everywhere)</SelectItem>
+                      <SelectItem value="group-only">Group Only (Only group members can see)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+        </div>
         
         <FormField
           control={form.control}

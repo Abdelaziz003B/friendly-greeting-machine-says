@@ -15,6 +15,8 @@ export const sellItemFormSchema = z.object({
   expeditedAvailable: z.boolean().default(false),
   returnsAccepted: z.boolean().default(false),
   returnsPeriod: z.string().optional(),
+  groupId: z.string().optional(),
+  visibility: z.enum(['public', 'group-only']).default('public'),
 });
 
 export type SellItemFormValues = z.infer<typeof sellItemFormSchema>;
@@ -31,6 +33,8 @@ export const defaultFormValues: SellItemFormValues = {
   expeditedAvailable: false,
   returnsAccepted: false,
   returnsPeriod: '14',
+  groupId: '',
+  visibility: 'public',
 };
 
 export const categories = [
