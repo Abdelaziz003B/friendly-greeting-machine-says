@@ -73,6 +73,7 @@ export const mockProducts: Product[] = [
       accepted: true,
       periodDays: 14,
     },
+    visibility: 'public',
   },
   {
     id: '2',
@@ -97,6 +98,7 @@ export const mockProducts: Product[] = [
     returns: {
       accepted: false,
     },
+    visibility: 'public',
   },
   {
     id: '3',
@@ -122,6 +124,7 @@ export const mockProducts: Product[] = [
       accepted: true,
       periodDays: 30,
     },
+    visibility: 'public',
   },
   {
     id: '4',
@@ -146,6 +149,7 @@ export const mockProducts: Product[] = [
     returns: {
       accepted: false,
     },
+    visibility: 'public',
   },
   {
     id: '5',
@@ -168,6 +172,7 @@ export const mockProducts: Product[] = [
       bidCount: 5,
       endTime: new Date('2023-09-01'),
     },
+    visibility: 'public',
   },
   {
     id: '6',
@@ -193,6 +198,7 @@ export const mockProducts: Product[] = [
       accepted: true,
       periodDays: 14,
     },
+    visibility: 'public',
   },
 ];
 

@@ -1,4 +1,3 @@
-
 import { supabase } from '../lib/supabase';
 import { Database } from '../models/database.types';
 import { Product, ProductCategory, User } from '../models/types';
@@ -50,6 +49,8 @@ const mapDbProductToProduct = async (dbProduct: DbProduct): Promise<Product> => 
       accepted: dbProduct.returns_accepted,
       periodDays: dbProduct.returns_period_days,
     },
+    groupId: dbProduct.group_id,
+    visibility: (dbProduct.visibility as 'public' | 'group-only') || 'public',
   };
 };
 

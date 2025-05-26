@@ -4,8 +4,8 @@ import { GroupCard } from '@/components/groups/GroupCard';
 import { CreateGroupDialog } from '@/components/groups/CreateGroupDialog';
 import { GroupService } from '@/services/GroupService';
 import { Group } from '@/models/group.types';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const Groups = () => {
   const [groups, setGroups] = useState<Group[]>([]);
