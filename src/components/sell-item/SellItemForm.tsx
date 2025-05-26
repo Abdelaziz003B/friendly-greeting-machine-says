@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,7 +49,7 @@ export const SellItemForm = ({ onSuccess, initialGroupId }: SellItemFormProps) =
     resolver: zodResolver(sellItemFormSchema),
     defaultValues: {
       ...defaultFormValues,
-      groupId: initialGroupId || '',
+      groupId: initialGroupId || 'no-group',
     },
   });
 
@@ -102,7 +101,7 @@ export const SellItemForm = ({ onSuccess, initialGroupId }: SellItemFormProps) =
         expedited_available: values.expeditedAvailable,
         returns_accepted: values.returnsAccepted,
         returns_period_days: values.returnsAccepted ? parseInt(values.returnsPeriod || '14') : undefined,
-        group_id: values.groupId || null,
+        group_id: values.groupId === 'no-group' ? null : values.groupId,
         visibility: values.visibility,
       };
       
@@ -231,7 +230,7 @@ export const SellItemForm = ({ onSuccess, initialGroupId }: SellItemFormProps) =
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="">Public (No Group)</SelectItem>
+                    <SelectItem value="no-group">Public (No Group)</SelectItem>
                     {userGroups.map((group) => (
                       <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
                     ))}
@@ -242,7 +241,7 @@ export const SellItemForm = ({ onSuccess, initialGroupId }: SellItemFormProps) =
             )}
           />
 
-          {form.watch('groupId') && (
+          {form.watch('groupId') && form.watch('groupId') !== 'no-group' && (
             <FormField
               control={form.control}
               name="visibility"

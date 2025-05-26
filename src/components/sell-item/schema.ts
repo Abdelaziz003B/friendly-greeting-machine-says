@@ -33,7 +33,7 @@ export const defaultFormValues: SellItemFormValues = {
   expeditedAvailable: false,
   returnsAccepted: false,
   returnsPeriod: '14',
-  groupId: '',
+  groupId: 'no-group',
   visibility: 'public',
 };
 
